@@ -2,22 +2,6 @@ import requests
 from datetime import datetime
 #import pandas as pd
 
-"""
-ticker = 'AAPL'
-period1 = '1596312311'
-# first date = -252374400 thats equal 02 jan 1962 ;
-# 000000000 is equal 02 jan 1970
-period2 = '1627848311'
-interval = '1d'  # '1wk', '1mo'
-events = 'history'  # 'div' (for dividends), 'split' (for stock split)
-url = str('https://query1.finance.yahoo.com/v7/finance/download/' + ticker + '?period1=' + period1 + '&period2=' +
-          period2 + '&interval=' + interval + '&events=' + events + '&includeAdjustedClose=true')
-headers = {'User-Agent': 'None'}
-
-response = requests.get(url, headers=headers)
-print(response.status_code)
-"""
-
 
 class Yahoo_Data:
     def __init__(self, ticker: str, period1: str, period2: str, interval: str):
