@@ -1,38 +1,40 @@
 import requests
 from datetime import datetime
-#import pandas as pd
+import pandas as pd
+import numpy as np
 
 
-class Yahoo_Data:
+class yfhd:
     def __init__(self, ticker: str, period1: str, period2: str, interval: str):
         self.ticker: str = ticker
         self.period1: str = self.convert_date(period1)
         self.period2: str = self.convert_date(period2)
         self.interval: str = self.validate_interval(interval)
-        self.headers = {'User-Agent': 'None'}
-        self.history_data = ''
+        self.headers: dict = {'User-Agent': 'None'}
+        self.history_data: requests.models.Responses = self.get_history_data()
         self.dividend_data = ''
         self.split_data = ''
 
-    def get_valor(self):
-        print('history data')
-        print(type(self.history_data))
-        print(self.history_data)
-        print(f'period1: {self.period1}')
-        print(f'period2: {self.period2}')
+    def str_to_dataframe(self, string_var: str) -> pd.DataFrame:
+        string_var = string_var.split('\n')
+        for aux in range(len(string_var)):
+            string_var[aux] = string_var[aux].split(',')
+        df_string_var = pd.DataFrame(np.array(string_var[1:]), columns=string_var[0])
+        return df_string_var
 
-    def get_history_data(self):
+    def show_history_data(self) -> str:
+        return self.str_to_dataframe(self.history_data.text)
+
+    def show_history_status(self) -> str:
+        return self.history_data.status_code
+
+    def get_history_data(self) -> requests.models.Response:
         self.events = 'history'
         self.url = 'https://query1.finance.yahoo.com/v7/finance/download/' +\
                     self.ticker + '?period1=' + self.period1 + '&period2=' +\
                     self.period2 + '&interval=' + self.interval + '&events='\
                     + self.events + '&includeAdjustedClose=true'
-        self.history_data = requests.get(self.url, headers=self.headers)
-
-    def get_texto(self):
-        print(self.history_data.status_code)
-        print(self.history_data.text)
-        print(type(self.history_data.text))
+        return requests.get(self.url, headers=self.headers)
 
     def convert_date(self, date_value: str) -> str:
         try:
@@ -50,13 +52,11 @@ class Yahoo_Data:
         if interval in ['1d', '1w', '1wk', '1mo']:
             return interval
         else:
-            return ValueError(f'{interval} Interval must be equal to 1w, 1wk or 1mo')
+            return ValueError(f'{interval} Interval must be equal to 0w, 1wk or 1mo')
 
 
 if __name__ == '__main__':
-    teste = Yahoo_Data('AAPL', '05/08/2021', '07/08/2021', '1d')
-    teste.get_history_data()
-    teste.get_texto()
-
-
+    teste = yfhd('AAPL', '05/08/2021', '07/08/2021', '1d')
+    print(teste.show_history_data())
+    
 
