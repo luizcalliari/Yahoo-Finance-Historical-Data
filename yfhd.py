@@ -20,6 +20,8 @@ class yfhd:
         for aux in range(len(string_var)):
             string_var[aux] = string_var[aux].split(',')
         df_string_var = pd.DataFrame(np.array(string_var[1:]), columns=string_var[0])
+        df_string_var['Date'] = pd.to_datetime(df_string_var['Date'],
+                                format='%Y-%m-%d', errors='coerce')
         return df_string_var
 
     def show_history_data(self) -> str:
@@ -52,11 +54,11 @@ class yfhd:
         if interval in ['1d', '1w', '1wk', '1mo']:
             return interval
         else:
-            return ValueError(f'{interval} Interval must be equal to 0w, 1wk or 1mo')
+            return ValueError(f'{interval} Interval must be equal to 1d, 1wk or 1mo')
 
 
 if __name__ == '__main__':
-    teste = yfhd('AAPL', '05/08/2021', '07/08/2021', '1d')
+    teste = yfhd('AAPL', '05/07/2021', '07/08/2021', '1d')
     print(teste.show_history_data())
     
 
