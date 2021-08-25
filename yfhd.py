@@ -11,18 +11,33 @@ class yfhd:
         self.period2: str = self.convert_date(period2)
         self.interval: str = self.validate_interval(interval)
         self.headers: dict = {'User-Agent': 'None'}
-        self.history_data: requests.models.Responses = self.get_history_data()
-        self.dividend_data = ''
-        self.split_data = ''
+        self.history_data: requests.models.Responses = self.get_data('history')
+        self.dividend_data: requests.models.Responses = self.get_data('div')
+        self.split_data: requests.models.Responses = self.get_data('split')
 
     def str_to_dataframe(self, string_var: str) -> pd.DataFrame:
         string_var = string_var.split('\n')
-        for aux in range(len(string_var)):
-            string_var[aux] = string_var[aux].split(',')
-        df_string_var = pd.DataFrame(np.array(string_var[1:]), columns=string_var[0])
-        df_string_var['Date'] = pd.to_datetime(df_string_var['Date'],
-                                format='%Y-%m-%d', errors='coerce')
+        if len(string_var) > 1:
+            for aux in range(len(string_var)):
+                string_var[aux] = string_var[aux].split(',')
+            df_string_var = pd.DataFrame(np.array(string_var[1:]), columns=string_var[0])
+            df_string_var['Date'] = pd.to_datetime(df_string_var['Date'],
+                                    format='%Y-%m-%d', errors='coerce')
+        else:
+            df_string_var = 'empty'
         return df_string_var
+
+    def show_split_data(self) -> str:
+        return self.str_to_dataframe(self.split_data.text)
+
+    def show_split_status(self) -> str:
+        return self.split_data.status_code
+
+    def show_div_data(self) -> str:
+        return self.str_to_dataframe(self.dividend_data.text)
+
+    def show_div_status(self) -> str:
+        return self.dividend_data.status_code
 
     def show_history_data(self) -> str:
         return self.str_to_dataframe(self.history_data.text)
@@ -30,12 +45,11 @@ class yfhd:
     def show_history_status(self) -> str:
         return self.history_data.status_code
 
-    def get_history_data(self) -> requests.models.Response:
-        self.events = 'history'
+    def get_data(self, events: str) -> requests.models.Response:
         self.url = 'https://query1.finance.yahoo.com/v7/finance/download/' +\
                     self.ticker + '?period1=' + self.period1 + '&period2=' +\
                     self.period2 + '&interval=' + self.interval + '&events='\
-                    + self.events + '&includeAdjustedClose=true'
+                    + events + '&includeAdjustedClose=true'
         return requests.get(self.url, headers=self.headers)
 
     def convert_date(self, date_value: str) -> str:
@@ -58,7 +72,12 @@ class yfhd:
 
 
 if __name__ == '__main__':
-    teste = yfhd('AAPL', '05/07/2021', '07/08/2021', '1d')
+    teste = yfhd('AAPL', '13/12/1980', '07/08/2021', '1d')
+    print(teste.show_history_status())
     print(teste.show_history_data())
-    
+    print(teste.show_div_status())
+    print(teste.show_div_data())
+    print(teste.show_split_status())
+    print(teste.show_split_data())
+
 
