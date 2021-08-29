@@ -72,11 +72,11 @@ class yfhd:
 
 
 if __name__ == '__main__':
-    teste = yfhd('AAPL', '13/12/1980', '07/08/2021', '1d')
-    print(teste.show_history_status())
-    print(teste.show_history_data())
-    print(teste.show_div_status())
-    print(teste.show_div_data())
-    print(teste.show_split_status())
-    print(teste.show_split_data())
+    test = yfhd('AAPL', '13/12/1980', '07/08/2021', '1d')
+    print(test.show_history_status())
+    print(test.show_history_data())
+    print(test.show_div_status())
+    print(test.show_div_data())
+    print(test.show_split_status())
+    print(test.show_split_data())
 
