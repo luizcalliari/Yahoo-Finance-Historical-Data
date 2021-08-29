@@ -65,19 +65,18 @@ class yfhd:
             raise ValueError(f'Problem with {date_value}')
         
     def validate_interval(self, interval: str) -> str:
-        if interval in ['1d', '1w', '1wk', '1mo']:
+        if interval in ['1d', '1wk', '1mo']:
             return interval
         else:
             raise ValueError(f'{interval} Interval must be equal to 1d, 1wk or 1mo')
 
 
 if __name__ == '__main__':
-    teste = yfhd('AAPL', '13/12/1980', '07/08/2021', '1b')
+    teste = yfhd('AAPL', '13/12/1980', '07/08/2021', '1d')
     print(teste.show_history_status())
     print(teste.show_history_data())
     print(teste.show_div_status())
     print(teste.show_div_data())
     print(teste.show_split_status())
     print(teste.show_split_data())
-
 
