@@ -57,22 +57,22 @@ class yfhd:
             date_value_aux =  datetime.strptime(date_value, '%d/%m/%Y')
             date_reference = datetime.strptime('02/01/1962', '%d/%m/%Y')
             if date_reference > date_value_aux:
-                return ValueError('The minimum date allowed is 02/01/1962')
+                raise ValueError('The minimum date allowed is 02/01/1962')
             else:
                 num_days = date_value_aux - date_reference
                 return str(-252374400 + (num_days.days * 24 * 60 * 60))
         except:
-            return ValueError(f'Problem with {date_value}')
+            raise ValueError(f'Problem with {date_value}')
         
     def validate_interval(self, interval: str) -> str:
         if interval in ['1d', '1w', '1wk', '1mo']:
             return interval
         else:
-            return ValueError(f'{interval} Interval must be equal to 1d, 1wk or 1mo')
+            raise ValueError(f'{interval} Interval must be equal to 1d, 1wk or 1mo')
 
 
 if __name__ == '__main__':
-    teste = yfhd('AAPL', '13/12/1980', '07/08/2021', '1d')
+    teste = yfhd('AAPL', '13/12/1980', '07/08/2021', '1b')
     print(teste.show_history_status())
     print(teste.show_history_data())
     print(teste.show_div_status())
