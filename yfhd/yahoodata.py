@@ -1,7 +1,8 @@
-import requests
-from datetime import datetime
 import pandas as pd
 import numpy as np
+import requests
+
+from datetime import datetime
 
 
 class YahooData:
@@ -27,19 +28,19 @@ class YahooData:
             df_string_var = 'empty'
         return df_string_var
 
-    def show_split_data(self) -> pd.Dataframe:
+    def show_split_data(self) -> pd.DataFrame:
         return self.str_to_dataframe(self.split_data.text)
 
-    def show_split_status(self) -> pd.Dataframe:
+    def show_split_status(self) -> int:
         return self.split_data.status_code
 
-    def show_div_data(self) -> pd.Dataframe:
+    def show_div_data(self) -> pd.DataFrame:
         return self.str_to_dataframe(self.dividend_data.text)
 
-    def show_div_status(self) -> pd.Dataframe:
+    def show_div_status(self) -> int:
         return self.dividend_data.status_code
 
-    def show_history_data(self) -> pd.Dataframe:
+    def show_history_data(self) -> pd.DataFrame:
         return self.str_to_dataframe(self.history_data.text)
 
     def show_history_status(self) -> int:
