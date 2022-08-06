@@ -1,5 +1,5 @@
 import pytest
-from yahoodata import YahooData
+from yfhd.yahoodata import YahooData
 import pandas
 
 
