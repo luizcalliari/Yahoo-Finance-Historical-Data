@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 
 
-class yfhd:
+class YahooData:
     def __init__(self, ticker: str, period1: str, period2: str, interval: str):
         self.ticker: str = ticker
         self.period1: str = self.convert_date(period1)
@@ -72,7 +72,7 @@ class yfhd:
 
 
 if __name__ == '__main__':
-    test = yfhd('AAPL', '13/12/1980', '07/08/2021', '1d')
+    test = YahooData('AAPL', '13/12/1980', '07/08/2021', '1d')
     print(test.show_history_status())
     print(test.show_history_data())
     print(test.show_div_status())
