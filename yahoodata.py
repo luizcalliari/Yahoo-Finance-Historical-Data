@@ -6,6 +6,7 @@ import numpy as np
 
 class YahooData:
     def __init__(self, ticker: str, period1: str, period2: str, interval: str):
+        self.url = None
         self.ticker: str = ticker
         self.period1: str = self.convert_date(period1)
         self.period2: str = self.convert_date(period2)
@@ -21,40 +22,39 @@ class YahooData:
             for aux in range(len(string_var)):
                 string_var[aux] = string_var[aux].split(',')
             df_string_var = pd.DataFrame(np.array(string_var[1:]), columns=string_var[0])
-            df_string_var['Date'] = pd.to_datetime(df_string_var['Date'],
-                                    format='%Y-%m-%d', errors='coerce')
+            df_string_var['Date'] = pd.to_datetime(df_string_var['Date'], format='%Y-%m-%d', errors='coerce')
         else:
             df_string_var = 'empty'
         return df_string_var
 
-    def show_split_data(self) -> str:
+    def show_split_data(self) -> pd.Dataframe:
         return self.str_to_dataframe(self.split_data.text)
 
-    def show_split_status(self) -> str:
+    def show_split_status(self) -> pd.Dataframe:
         return self.split_data.status_code
 
-    def show_div_data(self) -> str:
+    def show_div_data(self) -> pd.Dataframe:
         return self.str_to_dataframe(self.dividend_data.text)
 
-    def show_div_status(self) -> str:
+    def show_div_status(self) -> pd.Dataframe:
         return self.dividend_data.status_code
 
-    def show_history_data(self) -> str:
+    def show_history_data(self) -> pd.Dataframe:
         return self.str_to_dataframe(self.history_data.text)
 
-    def show_history_status(self) -> str:
+    def show_history_status(self) -> int:
         return self.history_data.status_code
 
     def get_data(self, events: str) -> requests.models.Response:
-        self.url = 'https://query1.finance.yahoo.com/v7/finance/download/' +\
-                    self.ticker + '?period1=' + self.period1 + '&period2=' +\
-                    self.period2 + '&interval=' + self.interval + '&events='\
-                    + events + '&includeAdjustedClose=true'
+        self.url = 'https://query1.finance.yahoo.com/v7/finance/download/' + \
+                   self.ticker + '?period1=' + self.period1 + '&period2=' + \
+                   self.period2 + '&interval=' + self.interval + '&events=' \
+                   + events + '&includeAdjustedClose=true'
         return requests.get(self.url, headers=self.headers)
 
     def convert_date(self, date_value: str) -> str:
         try:
-            date_value_aux =  datetime.strptime(date_value, '%d/%m/%Y')
+            date_value_aux = datetime.strptime(date_value, '%d/%m/%Y')
             date_reference = datetime.strptime('02/01/1962', '%d/%m/%Y')
             if date_reference > date_value_aux:
                 raise ValueError('The minimum date allowed is 02/01/1962')
@@ -63,7 +63,7 @@ class YahooData:
                 return str(-252374400 + (num_days.days * 24 * 60 * 60))
         except:
             raise ValueError(f'Problem with {date_value}')
-        
+
     def validate_interval(self, interval: str) -> str:
         if interval in ['1d', '1wk', '1mo']:
             return interval
@@ -79,4 +79,3 @@ if __name__ == '__main__':
     print(test.show_div_data())
     print(test.show_split_status())
     print(test.show_split_data())
-
