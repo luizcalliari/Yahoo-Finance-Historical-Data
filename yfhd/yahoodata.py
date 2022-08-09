@@ -19,8 +19,8 @@ class YahooData:
         self.split_data: requests = self._get_data(events='split')
 
     def _str_to_dataframe(self, string_var: str) -> Union[pd.DataFrame, str]:
-        if string_var:
-            string_var = string_var.split('\n')
+        string_var = string_var.split('\n')
+        if len(string_var) > 1:
             string_aux = []
             for aux in string_var:
                 string_aux.append(aux.split(','))
