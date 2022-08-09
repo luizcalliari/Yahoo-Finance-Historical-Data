@@ -17,6 +17,7 @@ setup(
     license='wtfpl',
     long_description=read('README'),
     install_requires=[
+        'numpy',
         'requests',
         'pandas',
         'pytest'
